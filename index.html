@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123a29">
+<title>Registro de Estudiantes 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div id="adminModal" class="login-overlay hidden" aria-hidden="true">
+  <div class="login-card">
+    <button class="login-close" type="button" data-close-admin aria-label="Cerrar">×</button>
+    <div class="eyebrow" style="color:var(--verde-600)">Registro de Estudiantes</div>
+    <h2>Acceso de Administrador</h2>
+    <p>Ingresa la clave asignada para consultar, organizar y exportar todos los registros.</p>
+    <form id="adminLoginForm">
+      <label for="adminPassword">Clave de acceso</label>
+      <input id="adminPassword" type="password" autocomplete="current-password" placeholder="Ingresa tu clave" required>
+      <button class="btn btn-primary" type="submit">Ingresar</button>
+      <div id="adminLoginMessage" class="alert hidden" role="status"></div>
+    </form>
+  </div>
+</div>
+
+<div class="top">
+  <div class="top-inner">
+    <div class="eyebrow">Registro Escolar · Año 2026</div>
+    <h1>Registro de Estudiantes</h1>
+    <p>Registra los datos académicos de los estudiantes y organiza la información automáticamente por colegio, grado, sección y apellido.</p>
+    <div class="header-card" aria-hidden="true">
+      <span>REGISTRO ESCOLAR</span>
+      <strong>2026</strong>
+      <small>Información centralizada</small>
+    </div>
+  </div>
+</div>
+
+<div class="rolebar">
+  <div class="rolebox">
+    <div>
+      <strong id="roleTitle">Registro de alumno</strong>
+      <div id="roleHelp" class="role-help">Completa tus datos. El listado general solo puede ser consultado por el administrador.</div>
+    </div>
+    <div class="role-actions">
+      <span id="roleBadge" class="badge badge-reg">SOLO REGISTRO</span>
+      <button id="openAdminBtn" class="btn btn-ghost" type="button">Administrador</button>
+      <button id="logoutBtn" class="btn btn-ghost hidden" type="button">Salir</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="grid">
+    <div class="card form-card">
+      <h2>Nuevo estudiante</h2>
+      <div class="sub">Completa los datos correspondientes al año 2026.</div>
+
+      <form id="studentForm" autocomplete="off">
+        <label for="apellidos">Apellidos completos <span class="req">*</span></label>
+        <input id="apellidos" type="text" maxlength="120" placeholder="Ej. Arenas Benavente" required>
+
+        <label for="nombres">Nombres completos <span class="req">*</span></label>
+        <input id="nombres" type="text" maxlength="120" placeholder="Ej. Gustavo Fabián" required>
+
+        <label for="nombreDiploma">Nombre que se colocará en el diploma para la ceremonia de Confirmación <span class="req">*</span></label>
+        <input id="nombreDiploma" type="text" maxlength="120" placeholder="Ej. Gustavo · Arenas · Gustavo A." required>
+        <div class="diploma-note">
+          <strong>IMPORTANTE:</strong> No se permiten apodos. Puedes colocar tu <strong>primer nombre</strong>, tu <strong>primer apellido</strong> o tu <strong>primer nombre y la inicial de tu primer apellido</strong>.
+          <span>Ejemplos: Gustavo · Arenas · Gustavo A.</span>
+        </div>
+
+        <div class="row2">
+          <div>
+            <label for="grado">Grado actual 2026 <span class="req">*</span></label>
+            <select id="grado" required>
+              <option value="" disabled selected>Seleccionar…</option>
+              <option>1° Primaria</option><option>2° Primaria</option><option>3° Primaria</option>
+              <option>4° Primaria</option><option>5° Primaria</option><option>6° Primaria</option>
+              <option>1° Secundaria</option><option>2° Secundaria</option><option>3° Secundaria</option>
+              <option>4° Secundaria</option><option>5° Secundaria</option>
+              <option>Universidad / Superior</option>
+            </select>
+          </div>
+          <div>
+            <label for="seccionSelect">Sección <span class="req">*</span></label>
+            <select id="seccionSelect" required>
+              <option value="" disabled selected>Seleccionar…</option>
+              <option>A</option><option>B</option><option>C</option><option>D</option>
+              <option>E</option><option>F</option><option>G</option><option>H</option>
+              <option>Única</option><option>Sin sección</option><option value="__otra__">Otra</option>
+            </select>
+            <input id="seccionOtra" class="hidden extra-input" type="text" maxlength="20" placeholder="Escribe tu sección">
+          </div>
+        </div>
+
+        <label for="colegio">Colegio / institución <span class="req">*</span></label>
+        <select id="colegio" required>
+          <option value="" disabled selected>Seleccionar colegio…</option>
+          <option>7 de Agosto</option>
+          <option>Al Guillén</option>
+          <option>Alfred Binet</option>
+          <option>Asunción</option>
+          <option>Esparta</option>
+          <option>Estela Mari</option>
+          <option>Francineti</option>
+          <option>Inmaculada</option>
+          <option>Innova</option>
+          <option>José Carlos Mariátegui</option>
+          <option>Juul</option>
+          <option>La Merced</option>
+          <option>María Reina</option>
+          <option>Neptalí</option>
+          <option>San Andrews</option>
+          <option>San Sebastián</option>
+          <option>Santa Clara</option>
+          <option>Santa María Madre</option>
+          <option>Santa Rosa de Viterbo</option>
+          <option>Santísimo Salvador</option>
+          <option>Stanford</option>
+          <option>Tales de Mileto</option>
+          <option>Universidad</option>
+        </select>
+
+        <div id="formMessage" class="alert hidden" role="status"></div>
+        <button id="submitBtn" class="btn btn-primary" type="submit">Registrar estudiante</button>
+      </form>
+    </div>
+
+    <div>
+      <div id="publicInfo" class="card sched-card">
+        <h3>Organización de los registros</h3>
+        <div class="sub">La información ingresada será clasificada automáticamente para facilitar su revisión.</div>
+        <div class="sched-list">
+          <div class="sched-row"><span class="sched-day">01</span><span class="sched-hours">Colegio</span></div>
+          <div class="sched-row"><span class="sched-day">02</span><span class="sched-hours">Grado y sección</span></div>
+          <div class="sched-row"><span class="sched-day">03</span><span class="sched-hours">Apellidos en orden alfabético</span></div>
+        </div>
+        <div class="duration-note">Los estudiantes solo pueden registrar información. El listado completo se mantiene reservado al administrador.</div>
+      </div>
+
+      <div id="adminArea" class="hidden">
+        <div class="card sched-card admin-summary">
+          <div class="admin-summary-head">
+            <div>
+              <h3>Panel de Administración</h3>
+              <div class="sub">Consulta y organiza todos los estudiantes registrados.</div>
+            </div>
+            <button id="refreshBtn" class="btn btn-ghost" type="button">Actualizar</button>
+          </div>
+          <div class="summary-line">
+            <span><strong id="statTotal">0</strong> estudiantes</span>
+            <span><strong id="statSchools">0</strong> colegios</span>
+            <span><strong id="statGrades">0</strong> grados</span>
+            <span><strong id="statSections">0</strong> secciones</span>
+          </div>
+          <div id="adminMessage" class="alert hidden"></div>
+          <div id="loadingAdmin" class="loading hidden">Actualizando información…</div>
+        </div>
+
+        <div class="list-head">
+          <h2>Estudiantes registrados</h2>
+          <div class="filters">
+            <input id="filterSearch" type="search" placeholder="Buscar apellido o nombre">
+            <select id="filterSchool"><option value="">Todos los colegios</option></select>
+            <select id="filterGrade"><option value="">Todos los grados</option></select>
+            <select id="filterSection"><option value="">Todas las secciones</option></select>
+            <button id="clearFilters" class="btn btn-ghost" type="button">Limpiar</button>
+          </div>
+        </div>
+
+        <div class="admin-toolbar">
+          <div class="view-toggle">
+            <button id="groupedViewBtn" class="btn btn-ghost active" type="button">Agrupado</button>
+            <button id="tableViewBtn" class="btn btn-ghost" type="button">Tabla</button>
+            <span id="resultCount" class="result-count">0 registros</span>
+          </div>
+          <div class="actions">
+            <button id="exportBtn" class="btn btn-ghost" type="button">Exportar CSV</button>
+            <button id="printBtn" class="btn btn-ghost" type="button">Imprimir</button>
+          </div>
+        </div>
+
+        <div id="groupedView"></div>
+        <div id="tableView" class="card table-card hidden"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Registro compartido en la nube · Año 2026. Los datos se organizan por colegio, grado, sección y apellido.</footer>
+<div id="toast" class="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
